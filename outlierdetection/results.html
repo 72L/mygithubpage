@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8">
+	<title>Outlier Detection</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="stylesheets/base.css">
+	<link rel="stylesheet" href="stylesheets/skeleton.css">
+	<link rel="stylesheet" href="stylesheets/layout.css">
+	<link rel="stylesheet" href="stylesheets/default.css">
+
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script type="text/x-mathjax-config">
+	  MathJax.Hub.Config({
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      processEscapes: true
+	    }
+	  });
+	</script>
+	<script type="text/javascript"
+	    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+	<script src="js/jquery-1.11.0.min.js"></script>
+	<script src="js/lightbox.min.js"></script>
+	<link href="css/lightbox.css" rel="stylesheet" />
+
+</head>
+<body>
+
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<!--<div class="container">
+		<div class="sixteen columns">
+			<h1 class="remove-bottom" style="margin-top: 40px">Skeleton</h1>
+			<h5>Version 1.2</h5>
+			<hr />
+		</div>
+		<div class="one-third column">
+			<h3>About Skeleton?</h3>
+			<p>Skeleton is a small collection of well-organized CSS files that can help you rapidly develop sites that look beautiful at any size, be it a 17" laptop screen or an iPhone. It's based on a responsive grid, but also provides very basic CSS for typography, buttons, forms and media queries. Go ahead, resize this super basic page to see the grid in action.</p>
+		</div>
+		<div class="one-third column">
+			<h3>Three Core Principles</h3>
+			<p>Skeleton is built on three core principles:</p>
+			<ul class="square">
+				<li><strong>A Responsive Grid Down To Mobile</strong>: Elegant scaling from a browser to tablets to mobile.</li>
+				<li><strong>Fast to Start</strong>: It's a tool for rapid development with best practices</li>
+				<li><strong>Style Agnostic</strong>: It provides the most basic, beautiful styles, but is meant to be overwritten.</li>
+			</ul>
+		</div>
+		<div class="one-third column">
+			<h3>Docs &amp; Support</h3>
+			<p>The easiest way to really get started with Skeleton is to check out the full docs and info at <a href="http://www.getskeleton.com">www.getskeleton.com.</a>. Skeleton is also open-source and has a <a href="https://github.com/dhgamache/skeleton">project on git</a>, so check that out if you want to report bugs or create a pull request. If you have any questions, thoughts, concerns or feedback, please don't hesitate to email me at <a href="mailto:hi@getskeleton.com">hi@getskeleton.com</a>.</p>
+		</div>
+
+	</div>-->
+	<!-- container -->
+
+	<div class="main container">
+		<div class="row">
+			<div class="three columns sidebar">
+				<div id="nav">
+					<h4 class="hero">Navigation</h4>
+					<a href="./index.html">Home</a>
+					<a href="./motivation.html">Motivation</a>
+					<a href="./data.html">Data &amp; Initial Exploration</a>
+					<a href="./methods.html">Previous Work &amp; Methods</a>
+					<a href="./results.html">Mixture of Experts &amp; Results</a>
+				</div>
+			</div>
+
+			<div id="content" class="nine columns">
+				<h4 class="title">Mixture of Experts &amp; Results</h4>
+				<h5>Introduction to the Mixture of Experts</h5>
+				<p>With the mixture of experts approach, we assume that each outlier detection method performs best within a particular domain of the sample space. In this ensemble method, we combine the results from each method in a smart way so that the diversity of experts can make up for deficiencies in individual methods over particular domains. Therefore, the result of each expert is weighted by values generated based on the location of the point in the 57-dimensional space. The gating parameter $\eta_i$ for each expert $i$ must be trained. </p>
+
+				<img src="images/Results0.png" width="50%" style="margin-left: auto; margin-right: auto; display: block;margin-bottom:15px;"/>
+				<p class="caption"><strong>Figure R1. Mixture of Experts. </strong> The result of each expert is weighted by values generated from a gating network. Both the gating network and the experts must be trained.</p>
+
+				<p>The gating probability $g_i^x$ is the weight assigned to each expert $i$ for data point $\vec{x}$. The weights are generated using a soft-max gating network:
+					$$g_i^x= \frac{exp(\vec{\eta_i}^T \vec{x})}{\sum_{j=1}^k exp(\vec{\eta_j}^T \vec{x}) },$$
+					where $\vec{x}$ is a 57-dimensional data vector (one data point), and $\eta_i$ is the gating parameter for each expert $i$, with a total of $k$ experts. Thus, the outlierliness score $P_x$ for a particular data point $\vec{x}$ is:
+					$$P_x = \sum_{i=1}^k g_i(\vec{\eta_j},\vec{x}) p_i(\vec{x}),$$
+					where $p_i(\vec{x})$ is the outlierliness score assigned to a particular data point $\vec{x}$ by expert/model $i$.
+				</p>
+
+
+				<h5>Results</h5>
+				<p>A mixture of experts model was trained on the data set of 1913 objects, optimizing for the detection of the artificial and the rcb group outliers. The optimization was done using simulated annealing over the entire range of possible $\eta$ values.</p>
+				<a href='images/Results1.png' data-lightbox='Results1'>
+				<img src="images/Results1.png" width="70%" style="margin-left: auto; margin-right: auto; display: block;margin-bottom:15px;"/></a>
+				<p class="caption"><strong>Figure R2. ROC for the combined mixture of experts outlier detection method. </strong> The combined model is able to perform just as well as the best individual expert in the detection of artificial outliers. It performs comparably to the best individual expert in the detection of rcb class outliers.</p>
+
+				<p>As shown above, the mixture of experts ensemble method is able to perform as well as the best individual outlier detection method for the artificial outliers. For the rcb class outliers, it does similarly to the top individual outlier detection methods. We cannot a priori expect the mixture to perform better than all the individual experts for both types of outlier detection (artificial and rcb) because we optimized <em>both</em> the rcb and the artificial outlier detection. The simultaneous optimization of two responses may have lead to compromises in the absolute performance for each specific outlier class. </p>
+
+				<p>Table R1 shows the performance as measured by area under the ROC curve (AUC) for each expert along with the performance of the mixture of experts. Again, since the mixture of experts is optimized for both artificial and rcb class outliers, it seems intuitive that the performance of detecting any <strong>one</strong> type of outlier may may not be as high as that for individual experts. However, it makes sense that the average AUC for the mixture of experts is highest. The mixture method still seems to be able to maintain high performance for the artificial outlier detection. </p>
+
+					<table>
+					  <thead>
+					    <tr>
+					      <th>Method</th>
+					      <th>Artificial Outliers AUC</th>
+					      <th>RCB Outliers AUC</th>
+					      <th>Average AUC</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr>
+					      <td>KNN 1 I-channel</td>
+					      <td>0.85</td>
+					      <td>0.94</td>
+					      <td>0.90</td>
+					    </tr>
+					    <tr>
+					      <td>KNN 1 V-channel</td>
+					      <td>0.42</td>
+					      <td>0.88</td>
+					      <td>0.65</td>
+					    </tr>
+					    <tr>
+					      <td>KNN 2 I-channel</td>
+					      <td>0.50</td>
+					      <td><strong>0.95</strong></td>
+					      <td>0.73</td>
+					    </tr>
+					    <tr>
+					      <td>KNN 2 V-channel</td>
+					      <td>0.50</td>
+					      <td>0.68</td>
+					      <td>0.59</td>
+					    </tr>
+					    <tr>
+					      <td>SVM+JP I-channel</td>
+					      <td>0.78</td>
+					      <td>0.91</td>
+					      <td>0.85</td>
+					    </tr>
+					    <tr>
+					      <td>SVM+JP V-channel</td>
+					      <td>0.62</td>
+					      <td>0.73</td>
+					      <td>0.68</td>
+					    </tr>
+					    <tr>
+					      <td>LOCI I-channel</td>
+					      <td>0.30</td>
+					      <td>0.28</td>
+					      <td>0.29</td>
+					    </tr>
+					    <tr>
+					      <td>LOCI V-channel</td>
+					      <td>0.28</td>
+					      <td>0.45</td>
+					      <td>0.37</td>
+					    </tr>
+					    <tr>
+					      <td>Hyperplane I-channel</td>
+					      <td>0.78</td>
+					      <td>0.78</td>
+					      <td>0.78</td>
+					    </tr>
+					    <tr>
+					      <td>Hyperplane V-channel</td>
+					      <td><strong>0.99</strong></td>
+					      <td>0.82</td>
+					      <td><strong>0.91</strong></td>
+					    </tr>
+					    <tr>
+					      <td>Mixture of Experts</td>
+					      <td>0.99</td>
+					      <td>0.89</td>
+					      <td>0.94</td>
+					    </tr>
+					   </tbody>
+					</table>
+				<p class="caption"><strong>Table R1. Area under the ROC curve (AUC) for various outlier detection methods.</strong> The AUC is a common single-number metric to compare between ROC curves (such as those seen in the Methods section). Bolded AUC values are from the individual outlier detection methods that did the best under each outlier detection task (either detecting artificial outliers or the rcb class as outliers). </p>
+
+
+				<a href='images/Results2.png' data-lightbox='Results2'>
+				<img src="images/Results2.png" width="70%" style="margin-left: auto; margin-right: auto; display: block;margin-bottom:15px;"/></a>
+				<p class="caption"><strong>Figure R3. Data points and detected outliers on the PCA plane (I-channel).</strong> Detected outliers are outlied in yellow. The threshold 1.1 was chosen by eye such that the obvious outliers were identified, allowing only about 1% false positive rate. The false positive rate at this threshold is 1% (231 non-rcb objects) and the true postive rate is 68% (18/22 rcb objects).</p>
+
+				<p>As can be seen in Figure R3, the mixture of experts model is able to identify almost all of the objects in class rcb that appear to be far away from the other points on the PCA plane. With an arbitrary threshold (1.1) the false positive rate is 1% (231 non-rcb objects) and the true postive rate is 68% (18/22 rcb objects). Of course, depending on one's tolerance for type 1 or type 2 error, the threshold can be adjusted. </p>
+
+				<h5>Application to Larger Data Set</h5>
+				<p>We used the mixture of experts model trained with the 1913 outliers to detect outliers in the larger data set of 10000 light curves: 2693 from lpv, 648 from dsct, 2673 from ecl, 93 from t2cep, 1109 from cep, 38 from acep, 2637 from rrlyr, 22 from rcb, and 87 from dpv. This set includes the training set. Note that the number of rcb class outliers is the same as the training set, so this exercise will show the performance of the mixture model in identifying the rcb class while dealing with more non-outlier data. There is also an additional dpv class. </p>
+
+				<a href='images/Results3.png' data-lightbox='Results3'>
+				<img src="images/Results3.png" width="70%" style="margin-left: auto; margin-right: auto; display: block;margin-bottom:15px;"/></a>
+				<p class="caption"><strong>Figure R4. ROC for the mixture of experts outlier detection method applied to larger dataset of 10000 objects. </strong> The mixture of experts model does a bit better in this scenario than in the training data scenario in identifying the rcb class outliers.</p>
+
+				<p>As Figure R4 shows, the mixture of experts model is readily applicable to larger data sets. It does fairly well in the detection of rcb class outliers (AUC = 0.90), performing as well as it did on the smaller training data set (AUC = 0.89).</p>
+
+				<a href='images/Results4.png' data-lightbox='Results4'>
+				<img src="images/Results4.png" width="70%" style="margin-left: auto; margin-right: auto; display: block;margin-bottom:15px;"/></a>
+				<p class="caption"><strong>Figure R5. Large data set with detected outliers plotted on the PCA plane (I-channel).</strong> Detected outliers are outlied in yellow. The threshold 1.4 was chosen by eye such that the obvious outliers were identified, yet not many points in the main cluster were identified as outlier. The false positive rate at this threshold is 1% (1711 non-rcb class objects) and the true postive rate is 68.5% (19/22 rcb class objects).</p>
+
+				<p>As can be seen in Figure R5, the mixture of experts model is able to identify almost all of the objects in class rcb that appear to be far away from the other points on the PCA plane. </p>
+
+				<h5>Next Steps</h5>
+				<p>Future work should focus on the addition of more outlier detection "experts" to the model. In addition, the optimization of the gating parmeter $\eta$ in mixture of experts model may be optimized simultaneously with individual expert parameters using expectation maximization and stochastic gradient descent. In addition, we look to use our easily extensible code to extend our work to other domains - in particular, fraud detection in financial transaction networks, which we hope to look at next semester.</p>
+			</div>
+		</div>
+	</div><!-- container -->
+
+<!-- End Document
+================================================== -->
+</body>
+</html>

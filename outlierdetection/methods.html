@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8">
+	<title>Outlier Detection</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="stylesheets/base.css">
+	<link rel="stylesheet" href="stylesheets/skeleton.css">
+	<link rel="stylesheet" href="stylesheets/layout.css">
+	<link rel="stylesheet" href="stylesheets/default.css">
+
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script type="text/x-mathjax-config">
+	  MathJax.Hub.Config({
+	    tex2jax: {
+	      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+	      processEscapes: true
+	    }
+	  });
+	</script>
+	<script type="text/javascript"
+	    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+	<script src="js/jquery-1.11.0.min.js"></script>
+	<script src="js/lightbox.min.js"></script>
+	<link href="css/lightbox.css" rel="stylesheet" />
+</head>
+<body>
+
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<!--<div class="container">
+		<div class="sixteen columns">
+			<h1 class="remove-bottom" style="margin-top: 40px">Skeleton</h1>
+			<h5>Version 1.2</h5>
+			<hr />
+		</div>
+		<div class="one-third column">
+			<h3>About Skeleton?</h3>
+			<p>Skeleton is a small collection of well-organized CSS files that can help you rapidly develop sites that look beautiful at any size, be it a 17" laptop screen or an iPhone. It's based on a responsive grid, but also provides very basic CSS for typography, buttons, forms and media queries. Go ahead, resize this super basic page to see the grid in action.</p>
+		</div>
+		<div class="one-third column">
+			<h3>Three Core Principles</h3>
+			<p>Skeleton is built on three core principles:</p>
+			<ul class="square">
+				<li><strong>A Responsive Grid Down To Mobile</strong>: Elegant scaling from a browser to tablets to mobile.</li>
+				<li><strong>Fast to Start</strong>: It's a tool for rapid development with best practices</li>
+				<li><strong>Style Agnostic</strong>: It provides the most basic, beautiful styles, but is meant to be overwritten.</li>
+			</ul>
+		</div>
+		<div class="one-third column">
+			<h3>Docs &amp; Support</h3>
+			<p>The easiest way to really get started with Skeleton is to check out the full docs and info at <a href="http://www.getskeleton.com">www.getskeleton.com.</a>. Skeleton is also open-source and has a <a href="https://github.com/dhgamache/skeleton">project on git</a>, so check that out if you want to report bugs or create a pull request. If you have any questions, thoughts, concerns or feedback, please don't hesitate to email me at <a href="mailto:hi@getskeleton.com">hi@getskeleton.com</a>.</p>
+		</div>
+
+	</div>-->
+	<!-- container -->
+
+	<div class="main container">
+		<div class="row">
+			<div class="three columns sidebar">
+				<div id="nav">
+					<h4 class="hero">Navigation</h4>
+					<a href="./index.html">Home</a>
+					<a href="./motivation.html">Motivation</a>
+					<a href="./data.html">Data &amp; Initial Exploration</a>
+					<a href="./methods.html">Previous Work &amp; Methods</a>
+					<a href="./results.html">Mixture of Experts &amp; Results</a>
+				</div>
+			</div>
+
+			<div id="content" class="nine columns">
+				<h4 class="title">Previous Work &amp; Methods</h4>
+				<p>The Mixture of experts approach gets its strength from combining the output of separate methods (experts) having presumably different regimes of expertise.</p>
+
+				<p>In this project, six outlier detection methods (modified and/or unmodified from previous work) were used on either the infrared (I) or visual (V) channels of the light curves. This gave a total of twelve experts (six methods on two different channels). Here, we describe each outlier detection method and show its stand-alone performance. </p>
+
+				<p>We measure performance using two metrics. First, an artificial set of outliers were created (see below) and the method's ability to score them as outliers is measured. In the second method, we choose a class ('rcb') that is designated as outlier (based on initial data exploration). We then evaulate how well the method can score objects in this class as outliers. </p>
+
+				<h5>Creation of Artificial Outliers</h5>
+				<p>20 artificial outliers were created by first randomly sampling 20 light curves from the data set. Within each feature, the 20 values were randomly shuffled among the data points. Then, $n$ standard deviations (of each feature) were randomly added to each data value, where $n$ is selected from a standard normal distribution centered at 4. Figure P1 shows the outliers plotted on the PCA plane.</p>
+				<a href='images/Methods1.png' data-lightbox='Methods1'>
+					<img src="images/Methods1.png" width="100%"/>
+				</a>
+				<p class="caption"><strong>Figure P1. Artificial Outliers on the PCA plane, along with real data.</strong> 20 Artificial outliers (white dots, black outline) were created as described. The outliers do not seem too far removed from the main cluster of points on the PCA plane, indicating that measuring outlier detection performance with these artificial points will provide a good test of robustness of each method. </p>
+
+				<h5>K Nearest Neighbors 1 (KNN1)</h5>
+				<p>Modified from standard KNN approaches descrbied in outlier detection and classfication review literature such as <a href="http://eprints.whiterose.ac.uk/767/1/hodgevj4.pdf">Hodge and Austin. 2004</a>. For every point, we compute a score which is the number of neighboring points that exist within a certain curoff distance chosen as a parameter. The distance in $n$-dimensions is merely the Euclidean norm but could be replaced by others. </p>
+				<p> When computing all neighbors for each point, this becomes a $O(n^2)$ problem.  In implementation there are ways to simplify these computations using $kd$-trees and other algorithms but this is abstracted for us by usage of the functions provided for KNN in the scikitlearn library.
+				</p>
+				<p> Using this method, there are a couple ways to evaluate outliers. The first would be to assume that the scores of KNN1 (the number of neighbors) are distributed normally such that we could filter based on a certain standard deviation count. Another option would be using the threshold parameter to find the $n$ most outliered points which can be labelled as outliers though this approach would work best by requiring a large understanding of the problem and an assumption on outlier likelihood.
+				</p>
+				<p> KNN methods are geometric - computed with scores usually based on Euclidean norms. This translates to a density-based outlier detection meaning that two very similarly in density classes or an outlier in the middle of existing classes may return false positives without a careful tuning of the cutoff distance parameter. In higher dimensions, using paired dimensions and multiple pairings can help highlight differences that exist only in single dimensions that would have otherwise averaged out but this trades off computation (O(n^4) naively since there are now ${n \choose 2}$ pairwise dimensions to evaluate all $n$ points.)
+				</p>
+
+			
+				<a href='images/knn1.png' data-lightbox='knn1'>
+					<img src="images/knn1.png"/>
+				</a>
+				<p class="caption"><strong>Figure P2. Visual representation .</strong> In a visualization to see how a KNN scoring method would work under this first version, we see how for a given point in question (the smiley face) it counts all neighbors within a cutoff distance (the solid or dotted circles).  Although the visualization is in the supervised classification context, this cutoff radius and neighbor counting is analagous in the unsupervised outlier detection context. </p>
+
+				<a href='images/Methods2.png' data-lightbox='Methods2'>
+					<img src="images/Methods2.png" width="100%"/>
+				</a>
+				<p class="caption"><strong>Figure P3. ROC for the KNN1 method.</strong> The ROC curves show that this method works well espescially for the RCB outlier class.  We see an fairly optimal curve and this validates our hypothesis that a simple geometric approach may lead to positive results. The artificial outlier class is not as easily detected. Area under the curve (AUC) is used as a metric to measure how optimal the model is.</p>
+
+
+				<h5>K Nearest Neighbors 2 (KNN2)</h5>
+				<p>As with the other KNN algorithm (KNN1) this version is also discussed in standard classification/outlier detection approaches as in <a href="http://eprints.whiterose.ac.uk/767/1/hodgevj4.pdf">Hodge and Austin. 2004</a>. As opposed to using a Euclidean-norm cutoff distance in $n$-dimensions, the given parameter, $n$, is the number of neighbors to compute. Then, the Euclidean-norm score is computed to all of the $n$ nearest neighbors. The total distance (which should be monotonically increasing) will be the score for each point. </p>
+				<p> The computation order is similarly $O(n^2)$ which when computed with different data structures like $kd$-trees can be optimized. The process of labelling outliers is also as above - be it with the assumption of normally distributed scores with a standard deviation cutoff, or tuning the parameters to select a certain proportion of possible outliers. The weakness of KNN2 is the same as KNN1 in that KNN-based methods are geometric and density based, as described above.  The problem is solved with pairwise analysis in higher dimensionality but this leads to a tradeoff with increasingly difficult computation.
+				</p>
+
+				<center>
+				<a href='images/knn2.png' data-lightbox='knn2'>
+					<img src="images/knn2.png"/>
+				</a>
+				</center>
+				<p class="caption"><strong>Figure P4. Visual Representation of KNN2.</strong> Although still in a classification context, we see how the point under study has distances computed to the nearest k neighbors (in this case 9) whose scores can be summed up to result in a final score for this node.  </p>
+				
+				<a href='images/Methods3.png' data-lightbox='Methods3'>
+					<img src="images/Methods3.png" width="100%"/>
+				</a>
+				<p class="caption"><strong>Figure P5. ROC for the KNN2 method.</strong> This version independently performs fairly well for the rcb class, but completely fails for the artificial outliers.</p>
+
+
+				<h5>Support Vector Machine &amp; Joint Probability (SVM+JP)</h5>
+				<p>This is a supervised learning method modified from <a href="http://iopscience.iop.org/0004-637X/793/1/23">Nun et al. 2014</a> and documented by supervised-learning standard algorithms. Briefly, a classifier is trained on data with known class labels. For each point, a membership probability vector is produced that lists the probability of its belonging to each class. Then a joint probability for the particular combination of membership probabilities is calculated.  Nun et al. used a random forest classifier and a Bayesian Network to produce the joint probabilities. Outliers are then identified as the points that have low joint probabilities because class membership probability vectors similar to thiers were not been seen often enough in the training data. </p>
+				<p>Here, we modify the approach by using SVM (rbf kernel) for the classifier and a frequency table to determine the joint probabilities. In addition, an artificial class sampled uniformly from the sample space was used to train the classifier. The outlier class combined used in conjuction with the rbf kernel SVM allowed the method to create bounded regions for each class even with a very small number randomly sampled background. These modifications were found to improve outlier detection (especially excluded-group outliers).  We can see a small-scale example on the classic "Iris" data set, below. </p>
+				<p>SVM was used instead of random forest because it can draws neater and tighter decision boundaries around clusters of points. This is necessary because outliers can be positioned far away from the initial training data points, yet be classified under a particular class solely due to its position radial to a class decision space. We found that the SVM classifier, with decision boundaries that encompass well the clusters of points for each particular class, improves detection of these kinds of outliers. </p>
+
+				<a href='images/svmiris.jpg' data-lightbox='svmiris'>
+					<img src="images/svmiris.jpg" width="100%"/>
+				</a>
+				<p class="caption"><strong>Figure P6. RBF Kernel SVM on Iris Data </strong> One of the benefits to using SVM, as opposed to a random forest, is its ability to draw deciison boundaries that surround the entire cluster of points, when trained with a uniformly sampled artificial class (black).</p>
+
+				<a href='images/Methods4.png' data-lightbox='Methods4'>
+				<img src="images/Methods4.png" width="100%"/>
+					</a>
+				<p class="caption"><strong>Figure P7. ROC for the SVM+JP method. </strong> In the infrared channel (left), the SVM+JP method does very well in idenfitying the rcb outliers, and it performs moderately better than random guessing for the artificual outliers. In the visible channel (left), there is poorer performance for the rcb data. </p>
+
+
+
+				<h5>Local Correlation Integral (LoCI)</h5>
+				<p>Modified from <a href="http://www.intel-research.net/Publications/Pittsburgh/081620021325_99.pdf">Papadimitriou et al. 2003.</a></p>
+				<p>LOCI provides an automatic, data-dictated cutoff to determine whether a point is an outlier, with very few hyperparameters forcing users to pick arbitrary cut-offs. In addition, LOCI is quickly computable (compared to previous best methods) and approximate LOCI is practically linear in time. The algorithm involves the introduction of a multi-granularity deviation factor (MDEF), and then selecting a point as an outlier if its MDEF value deviates significantly (more than 3 $\sigma$ from local averages). Intuitively, the LOCI method finds points that deviate significantly from the density of points in its local neighborhood. This is formalized in the MDEF concept. Let the $r$-neighborhood of an object $p_i$ be the set of objects within distance $r$ of $p_i$. Then, intuitively, the MDEF at radius $r$ for a point $p_i$ is the relative deviation of its local neighborhood density from the average local neighborhood density in its $r$-neighborhood. So, an object with neighborhood density that matches the average local neighborhood density will have MDEF 0; outliers will have MDEFs far from 0. More formally, we have:
+
+				$$MDEF(p_i, r, \alpha) = 1 - \frac{n(p_i, \alpha r)}{\hat{n}(p_i, \alpha, r)}$$
+
+				Here, $n(p_i, \alpha r)$ is the number of $\alpha r$-neighbors of $p_i$; that is, the number of points $p\in \mathbb{P}$ such that $d(p_i, p) \leq \alpha r$, including $p_i$ itself such that $n(p_i, \alpha r) > 0$ strictly.
+
+				Also, $\hat{n}(p_i, \alpha, r)$ is the average of $n(p, \alpha r)$ over the set of $r$-neighbors of $p_i$; that is,
+
+				$$\hat{n}(p_i, \alpha, r) = \frac{\sum_{p\in\mathcal{N}(p_i, r)} n(p, \alpha r)}{n(p_i, r)}$$
+
+				Also, define
+
+				$$\sigma_{MDEF}(p_i, r, \alpha)= \frac{\sigma_{\hat{n}}(p_i, r, \alpha)}{\hat{n}(p_i, r, \alpha)}$$
+
+
+				where
+
+				$$\sigma_{\hat{n}}(p_i, r, \alpha) = \sqrt{\frac{\sum_{p\in\mathcal{N}(p_i, r)}(n(p, \alpha r)-\hat{n}(p_i, r, \alpha))^2}{n(p_i, r)}}$$
+
+				Then, to determine if a point is an outlier, we use the following algorithm. For each $p_i\in\mathbb{P}$, compute $MDEF(p_i, r, \alpha)$ and $\sigma_{MDEF}(p_i, r, \alpha)$. If $MDEF > 3\sigma_{MDEF}$, flag $p_i$ as an outlier. If for any $r_{\textrm{min}} \leq r \leq r_{\textrm{max}}$ a point $p_i$ is flagged as an outlier via the aforementioned mechanism, then we consider that point to be an outlier. These cutoffs can be determined on a per-problem basis, but in general we use the following. We set $r_{\textrm{max}} \approx \alpha^{-1}R_{\mathbb{P}}$ and $r_{\textrm{min}}$ such that we have $\hat{n}_{\textrm{min}} = 20$ neighbors.
+				</p>
+				<a href='images/Methods5.png' data-lightbox='Methods5'>
+					<img src="images/Methods5.png" width="100%"/>
+				</a>
+				<p class="caption"><strong>Figure P8. ROC for the LOCI method.</strong> The LOCI method does not do very well in detecting artificial or rcb class outliers. The parameters for this expert have not been optimized. </p>
+
+
+				<h5>Mixture Model (Eskin)</h5>
+				<p>Modified from <a href="http://academiccommons.columbia.edu/download/fedora_content/download/ac:125814/CONTENT/anomaly-icml00.pdf">Eskin, 2000</a>. The main goal behind the mixture model is to simplify a more complicated interaction to a combination of simpler distributions. Outlier classification is done by first assuming that all points belong in the normal group - and then computing a T-statistic to compute the probaiblity of observing this grouping.  Then, for every orderm, $k$, (we only implemented order-1 where $k=1$), we iterate through the ${n \choose k}$ space to move $k$ points into the outlier class, which is usually assumed to be uniform.  Then the scores of the new grouping is computed. If the change in score is past a given threshold, the $k$ points are marked as outliers in that order of space. In summary, for order-1, each point is moved from the normal to the outlier class and if the scores improve under this grouping beyond a certain threshold, the point is accepted as an ourlier. This does mean that optimizing for the theshold parameter can only be performed to target a certain number of outliers, again requiring additional knowledge. For computational efficiency, often the scoring is based on $\log$ scores.</p>
+
+				<p> The are three main assumptions that allow this Eskin approach to work the best. First, that the normal data can be fairly modelled by the given probability distribution. Second, that the anomalous elements are sufficiently distinct from the normal elements. And finally, that anomalies are few ($< 5\%$) of the entire data set or else the model will get distorted.
+				</p>
+
+
+				<p> An analysis of the math of the method is described now.  We let $D$ represent the generative distribution of the entire data, $M$ the majority distribution, $A$ the anomalous distribution, $\lambda$ the probability of an anomalous element generated from A and $(1-\lambda)$ the probability of a normal element generated from M.
+				</p>
+
+				<p> We write the generalized distribtuion as: <br /> $D = (1-\lambda)M + \lambda A$
+				</p>
+
+				<p> The probability distribution generation with function $\Phi$: <br />$P_{M_t}(X) = \Phi_M(M_t)(X)$ <br />$P_{A_t}(X) = \Phi_A(A_t)(X)$
+				</p>
+
+				<p> The likelihood of the distribution: <br />$L_t(D) = \prod_{i=1}^{N}P_D(x_i) = \left( (1-\lambda)^{|M_t|} \prod_{x_i \in M_t}P_{M_t}(x_i) \right) \left( \lambda^{|A_t|} \prod_{x_j \in A_t}P_{A_t}(x_j) \right)$
+				</p>
+
+				<p> The $\log$ of the above likelihood for computational speed: <br />$LL_i(D) = |M_t| \log (1-\lambda) + \sum _{x_i \in M_i} \log (P_{M_i}(x_i)) + |A_t| \log (\lambda) + \sum _{x_j \in A_t} \log (P_{A_t}(x_j))$
+				</p>
+
+				<p> Treating $x_i$ as an anomaly: <br />$M_t = M_{t-1} \backslash {x_t}$ <br /> $A_t = A_{t-1} \cup {x_t}$
+				</p>
+
+				<p> To determine outliers, we then use the score cutoff, $c$ to select, via: <br />$LL_t - LL_{t-1} < c$
+				</p>
+
+				<p> The greatest weakness of the mixture model is its dependence on the underlying simple models that form the mixture. This means that the normal points need to follow a known distribution that can lead to a computed t-statistics (can be joint distributions, etc). When in doubt, a Gaussian model can be used but the results would be less accurate and precise
+				</p>
+
+				<center>	
+				<a href='images/mixturemodel.jpg' data-lightbox='mixturemodel'>
+					<img src="images/mixturemodel.jpg" width="60%"/>
+				</a>
+				</center>
+				<p class="caption"><strong>Figure P9. Mixture Model Visual.</strong> We see a visual for modelling a more complex system as a joint "mixture" of various simpler models, in this case, the combination of various Gaussians with different parameters. </p>
+				
+
+				<a href='images/Methods6.png' data-lightbox='Methods6'>
+					<img src="images/Methods6.png" width="100%"/>
+				</a>
+				<p class="caption"><strong>Figure P10. ROC for the Eskin method. </strong> We see that its performance is quite superior with the RCB class but more lacking with the artificial outliers. As discussed in the mechanics, a mixture model is only as good as the individual models that need to be mixed. Perhaps the Gaussian assumptions for the artifical outliers are not as good. </p>
+
+
+				<h5>Hyperplane Regression (HyperReg)</h5>
+				<p> Mentioned in outlier detection and classification literature, like <a href="http://eprints.whiterose.ac.uk/767/1/hodgevj4.pdf">Hodge and Austin. 2004</a>, another paradigm for evaluatoin could be to use a multiple regression, which we will call hyperplane regression. This is an $n$-dimensional extension on the traditional 2D linear regression, where a regression line is computed with coefficient on the dependent variable and a constant term. When we scale up, we compute a coefficient for each feature and a constant term. To compute outliers, we take the norm of the coefficient vector and track changes when removing $k$ points. As with the Mixture Model above, the most computationally effective is just to remove one point at a time, so as not to require iteration through ${n \choose k}$ spaces for every $k$. The change in magnitude of our coefficient vector becomes a score, where scores that are over 4 standard deviations are marked as vectors.</p>
+
+				<p> Computationally, this can be done like a least-squares optimization. Again, the actual implementation is abstracted from us through uses of the statsmodel python library. This method will work best when there is linear model that represents the mechanics of the data. Actual data often have partially linear components, such as spending vs. income, or color vs. heat. This method would work well on these methods.  Higher orders would lead to linear combinations of the features, which can also be okay, though if there are any non-linearly related components, this would throw off an $n$-dimensional model and may be also better tested pairwise at the cost of more computation.	
+				</p>
+
+				<center>
+				<a href='images/planereg.png' data-lightbox='knn2'>
+					<img src="images/planereg.png"/>
+				</a>
+				</center>
+				<p class="caption"><strong>Figure P11. $n=3$ case of (hyper)plane regression.</strong> A visual for what higher order regressions look like. With 3 dimensions, the visual interpretation is straightforward - a plane within a 3D space.  Higher orders are not as intuitively visual. </p>
+				
+				<a href='images/Methods7.png' data-lightbox='Methods7'>
+					<img src="images/Methods7.png" width="100%"/>
+				</a>
+				<p class="caption"><strong>Figure P12. ROC for the Hyperplane regression.</strong> This method performs clearly the best for the artificial outliers in the V channel. For everything else, it does not perform better than the other experts shown above. </p>
+
+			</div>
+		</div>
+	</div><!-- container -->
+
+<!-- End Document
+================================================== -->
+</body>
+</html>
